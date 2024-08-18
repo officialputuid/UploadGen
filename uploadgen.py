@@ -119,9 +119,14 @@ olih officialputuid
                 upload_bashupload(file_path)
 
             # Ask user if they want to upload another file
-            repeat = input("\n[🔄] Ingin ngunggahang berkas malih? (y/n): ").strip().lower()
-            if repeat != 'y':
-                print("\n[✔️] Program sampun katutup!")
+            while True:
+                repeat = input("\n[🔄] Ingin ngunggahang berkas malih? (y/n): ").strip().lower()
+                if repeat in ['y', 'n']:
+                    break
+                print("[❌] Pilihan nenten valid. Mangda milih 'y' utawi 'n'.")
+
+            if repeat == 'n':
+                print("[✔️] Program sampun katutup!")
                 break
 
         except KeyboardInterrupt:
