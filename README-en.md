@@ -1,11 +1,12 @@
 # UploadGen
 
-`UploadGen` is a Python script designed for easy file uploads to two popular file-sharing platforms: PixelDrain and GoFile. This utility simplifies uploading files by providing a straightforward command-line interface.
+`UploadGen` is a Python script designed for easy file uploads to popular file-sharing platforms: PixelDrain, GoFile and Bashupload. This utility simplifies uploading files by providing a straightforward command-line interface.
 
 ## Features
 
 - **Upload to PixelDrain**: Requires an API key for authentication.
 - **Upload to GoFile**: Automatically selects a server for upload.
+- **Upload to Bashupload**: Files are stored for 3 days and can be downloaded only once.
 
 ## Requirements
 
@@ -41,6 +42,7 @@
 
    - **1**: Upload to PixelDrain (API key required)
    - **2**: Upload to GoFile (no API key required)
+   - **3**: Upload to Bashupload
 
 3. **Provide Necessary Information**
 
@@ -60,19 +62,26 @@ by officialputuid
 Choose an UploadGen to:
 1. Pixeldrain.com (Need API)
 2. GoFile.io
+3. Bashupload.com (Can only be used/downloaded once)
 
 Enter the number of your choice: 1
 Enter your Pixeldrain API key: your_api_key_here
 Enter the path to the file you want to upload: /path/to/your/file.txt
-Uploading /path/to/your/file.txt to PixelDrain...
+Uploading /path/to/your/file.txt to PixelDrain.com
 File uploaded successfully!
 Your file URL: https://pixeldrain.com/u/file
 
 Enter the number of your choice: 2
 Enter the path to the file you want to upload: /path/to/your/file.txt
-Uploading /path/to/your/file.txt to GoFile.io...
+Uploading /path/to/your/file.txt to GoFile.io
 File uploaded successfully!
 Your file URL: https://gofile.io/d/file
+
+Enter the number of your choice: 3
+Enter the path to the file you want to upload: /path/to/your/file.txt
+Uploading /path/to/your/file.txt to Bashupload.com
+File uploaded successfully!
+Your file URL: https://bashupload.com/?/file
 ```
 
 ## Error Handling

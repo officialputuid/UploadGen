@@ -1,11 +1,12 @@
 # UploadGen
 
-`UploadGen` inggih punika skrip Python sane kakaryanin mangda dangan ngunggahang berkas ring kalih platform berbagi berkas sane kasub: PixelDrain lan GoFile. Utilitas puniki ngawentenang sederhana ngunggahang berkas antuk ngicenin antarmuka baris perintah sane lurus.
+`UploadGen` inggih punika skrip Python sane kakaryanin mangda dangan ngunggahang berkas ring platform berbagi berkas sane kasub: PixelDrain, GoFile lan Bashupload. Utilitas puniki ngawentenang sederhana ngunggahang berkas antuk ngicenin antarmuka baris perintah sane lurus.
 
 ## Pitur
 
 - **Unggah ka PixelDrain**: Merluang kunci API anggén otentikasi.
 - **Unggah ka GoFile**: Otomatis milih server sané jagi kaunggahang.
+- **Unggah ka Bashupload**: Berkas kasimpen 3 rahina lan prasida kaunduh wantah apisan.
 
 ## Sarat
 
@@ -41,6 +42,7 @@
 
    - **1**: Unggahang ka PixelDrain (kaperluang kunci API)
    - **2**: Unggahang ka GoFile (nénten perlu kunci API)
+   - **3**: Unggahang ka Bashupload
 
 3. **Ngicenin Gatra sane Kaperluang**
 
@@ -60,19 +62,26 @@ by officialputuid
 Ketik nomor sane pilih ragane:
 1. Pixeldrain.com (Kaperluang API)
 2. GoFile.io
+2. Bashupload.com (Wantah dados kaanggén/kaunduh apisan)
 
 Unggahang nomer sané kapilih: 1
 Ketik kunci API Pixeldrain ragane: kunci_api_sametoné
 Ketik berkas sane jagi kaunggahang: /path/to/your/file.txt
-Ngunggahang /path/to/your/file.txt ka PixelDrain...
+Ngunggahang /path/to/your/file.txt ka PixelDrain.com
 Berkas puniki sampun prasida kaunggahang!
 URL berkas ragane:: https://pixeldrain.com/u/file
 
 Unggahang nomer sané kapilih: 2
 Ketik berkas sane jagi kaunggahang: /path/to/your/file.txt
-Ngunggahang /path/to/your/file.txt ka PixelDrain...
+Ngunggahang /path/to/your/file.txt ka GoFile.io
 Berkas puniki sampun prasida kaunggahang!
 URL berkas ragane: https://gofile.io/d/file
+
+Unggahang nomer sané kapilih: 3
+Ketik berkas sane jagi kaunggahang: /path/to/your/file.txt
+Ngunggahang /path/to/your/file.txt ka Bashupload.com
+Berkas puniki sampun prasida kaunggahang!
+URL berkas ragane: https://bashupload.com/?/file
 ```
 
 ## Penanganan Kaiwangan
