@@ -1,12 +1,13 @@
 # UploadGen
 
-`UploadGen` inggih punika skrip Python sane kakaryanin mangda dangan ngunggahang berkas ring platform berbagi berkas sane kasub: PixelDrain, GoFile lan Bashupload. Utilitas puniki ngawentenang sederhana ngunggahang berkas antuk ngicenin antarmuka baris perintah sane lurus.
+`UploadGen` inggih punika skrip Python sane kakaryanin mangda dangan ngunggahang berkas ring platform berbagi berkas sane kasub. Utilitas puniki ngawentenang sederhana ngunggahang berkas antuk ngicenin antarmuka baris perintah sane lurus.
 
 ## Pitur
 
 - **Unggah ka PixelDrain**: Merluang kunci API anggén otentikasi.
 - **Unggah ka GoFile**: Otomatis milih server sané jagi kaunggahang.
 - **Unggah ka Bashupload**: Berkas kasimpen 3 rahina lan prasida kaunduh wantah apisan.
+- **Unggah ka Devuploads**
 
 ## Sarat
 
@@ -43,11 +44,14 @@
    - **1**: Unggahang ka PixelDrain (kaperluang kunci API)
    - **2**: Unggahang ka GoFile (nénten perlu kunci API)
    - **3**: Unggahang ka Bashupload
+   - **4**: Unggahang ka Devuploads
 
 3. **Ngicenin Gatra sane Kaperluang**
 
    - Antuk PixelDrain: Unggahang kunci API Sameton yéning katunasin.
    - Antuk GoFile: Nénten perlu kunci API.
+   - Antuk Bashupload: Nénten perlu kunci API.
+   - Antuk Devuploads: Unggahang kunci API Sameton yéning katunasin.
 
 4. **Tentuang Jalur Berkas**
 
@@ -62,7 +66,8 @@ by officialputuid
 Ketik nomor sane pilih ragane:
 1. Pixeldrain.com (Kaperluang API)
 2. GoFile.io
-2. Bashupload.com (Wantah dados kaanggén/kaunduh apisan)
+3. Bashupload.com (Wantah dados kaanggén/kaunduh apisan)
+4. Devuploads.com (Kaperluang API)
 
 Unggahang nomer sané kapilih: 1
 Ketik kunci API Pixeldrain ragane: kunci_api_sametoné
@@ -82,6 +87,12 @@ Ketik berkas sane jagi kaunggahang: /path/to/your/file.txt
 Ngunggahang /path/to/your/file.txt ka Bashupload.com
 Berkas puniki sampun prasida kaunggahang!
 URL berkas ragane: https://bashupload.com/?/file
+
+Unggahang nomer sané kapilih: 4
+Ketik berkas sane jagi kaunggahang: /path/to/your/file.txt
+Ngunggahang /path/to/your/file.txt ka Devuploads.com
+Berkas puniki sampun prasida kaunggahang!
+URL berkas ragane: https://devuploads.com/file
 ```
 
 ## Penanganan Kaiwangan
