@@ -1,16 +1,43 @@
+# Copyright (C) 2024 officialputuid
+
 import os
 import sys
 import requests
+import base64
 
 def upload_pixeldrain(api_key, file_path):
     print(f"[⌛] Ngunggahang {file_path} ka Pixeldrain.com . . .")
-    with open(file_path, 'rb') as f:
-        response = requests.post(
-            "https://pixeldrain.com/api/file",
-            auth=('', api_key),
-            files={'file': f},
-        )
+
+    # Validate API key using the adapted method
     try:
+        # Encode the API key to Base64
+        encoded_api_key = base64.b64encode(f":{api_key}".encode()).decode()
+
+        # Use the Authorization header with the encoded key
+        check_api_response = requests.get(
+            "https://pixeldrain.com/api/user/files",
+            headers={
+                "Authorization": f"Basic {encoded_api_key}"
+            }
+        )
+        if check_api_response.status_code == 200:
+            print("[✔️] Kunci API Pixeldrain valid!")
+        else:
+            print(f"[❌] Kunci API Pixeldrain nenten valid! Kode status: {check_api_response.status_code}")
+            return
+    except requests.exceptions.RequestException as e:
+        print(f"[❌] Gagal antuk mariksa kunci API: {e}")
+        return
+
+    # Proceed with file upload
+    try:
+        with open(file_path, 'rb') as f:
+            response = requests.post(
+                "https://pixeldrain.com/api/file",
+                auth=('', api_key),
+                files={'file': f},
+            )
+        response.raise_for_status()
         response_json = response.json()
         file_id = response_json.get('id')
         if file_id:
@@ -18,8 +45,14 @@ def upload_pixeldrain(api_key, file_path):
             print(f"[🔗] URL berkas ragane: https://pixeldrain.com/u/{file_id}")
         else:
             print("[❌] Gagal ngunggahang.")
+    except requests.exceptions.SSLError as ssl_err:
+        print(f"[❌] Gagal ngunggahang berkas: Masalah SSL. Pesan kesalahan: {ssl_err}")
+    except requests.exceptions.RequestException as e:
+        print(f"[❌] Gagal ngunggahang berkas: {e}")
     except requests.exceptions.JSONDecodeError:
         print("[❌] Nenten prasida nlatarang pasaut dados JSON.")
+    except Exception as e:
+        print(f"[❌] Wénten kaiwangan sané nénten katenger: {e}")
         sys.exit(1)
 
 def upload_gofile(file_path):
@@ -31,7 +64,7 @@ def upload_gofile(file_path):
     except requests.RequestException as e:
         print(f"[❌] Gagal antuk ngamolihang informasi server: {e}")
         sys.exit(1)
-    
+
     try:
         with open(file_path, 'rb') as f:
             upload_response = requests.post(
@@ -74,52 +107,56 @@ def upload_bashupload(file_path):
 def upload_devuploads(api_key, file_path):
     print(f"[⌛] Ngunggahang {file_path} ka Devuploads.com . . .")
     url = "https://devuploads.com/api/upload/server"
-    
+
     try:
         # Validate API key
-        res_json = requests.get(f"{url}?key={api_key}").json()
+        check_response = requests.get(f"{url}?key={api_key}")
+        check_response.raise_for_status()
+        res_json = check_response.json()
+
         res_status = res_json.get("status")
         sess_id = res_json.get("sess_id")
         server_url = res_json.get("result")
 
-        if res_status != 200 or not sess_id or not server_url:
-            print(f"[❌] API Key {api_key} nenten valid utawi informasi server nenten prasida.")
+        if res_status == 200:
+            print("[✔️] Kunci API Devuploads valid!")
+            if not sess_id or not server_url:
+                print(f"[❌] Informasi server nenten prasida. Kunci API valid tapi server informasi kosong.")
+                return
+        else:
+            print(f"[❌] Kunci API Devuploads nenten valid! Kode status: {res_status}")
             return
-        
-        # Validate file path
-        file_path = os.path.abspath(file_path)
-        if not os.path.isfile(file_path):
-            print(f"[❌] File {file_path} nenten katemu! Indayang ngranjingang berkas sane patut.")
-            return
-        
+
+        # Check file size
         file_size = os.path.getsize(file_path)
         if file_size == 0:
             print(f"[❌] File {file_path} nenten madaging informasi napi-napi.\n[❌] Devuploads nenten prasida ngunggahang berkas nganggen 0 bytes")
             return
 
+        # Proceed with file upload
         with open(file_path, 'rb') as f:
-            response = requests.post(
+            upload_response = requests.post(
                 server_url,
                 files={"file": f},
                 data={"sess_id": sess_id, "utype": "reg"},
             )
-            response.raise_for_status()
+        upload_response.raise_for_status()
 
-            response_json = response.json()
-            
-            if isinstance(response_json, list):
-                response_json = response_json[0]
+        upload_response_json = upload_response.json()
 
-            file_code = response_json.get("file_code")
-            file_status = response_json.get("file_status")
-            
-            if file_code == 'undef':
-                print(f"[❌] Gagal ngunggahang: {file_status}")
-            elif file_code:
-                print("[✔️] Berkas puniki sampun prasida kaunggahang!")
-                print(f"[🔗] URL berkas ragane: https://devuploads.com/{file_code}")
-            else:
-                print(f"[❌] Gagal ngunggahang: {response_json}")
+        if isinstance(upload_response_json, list):
+            upload_response_json = upload_response_json[0]
+
+        file_code = upload_response_json.get("file_code")
+        file_status = upload_response_json.get("file_status")
+
+        if file_code == 'undef':
+            print(f"[❌] Gagal ngunggahang: {file_status}")
+        elif file_code:
+            print("[✔️] Berkas puniki sampun prasida kaunggahang!")
+            print(f"[🔗] URL berkas ragane: https://devuploads.com/{file_code}")
+        else:
+            print(f"[❌] Gagal ngunggahang: {upload_response_json}")
 
     except requests.RequestException as e:
         print(f"[❌] Nenten prasida ngunggahang berkas: {e}")
@@ -127,7 +164,7 @@ def upload_devuploads(api_key, file_path):
 
 def main():
     print("\033[92m" + """
-UploadGen v1.2
+UploadGen v1.3
 olih officialputuid   
     """ + "\033[0m")
 

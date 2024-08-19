@@ -7,7 +7,7 @@
 - **Unggah ka PixelDrain**: Merluang kunci API anggén otentikasi.
 - **Unggah ka GoFile**: Otomatis milih server sané jagi kaunggahang.
 - **Unggah ka Bashupload**: Berkas kasimpen 3 rahina lan prasida kaunduh wantah apisan.
-- **Unggah ka Devuploads**
+- **Unggah ka Devuploads**: Merluang kunci API anggén otentikasi.
 
 ## Sarat
 
@@ -43,8 +43,8 @@
 
    - **1**: Unggahang ka PixelDrain (kaperluang kunci API)
    - **2**: Unggahang ka GoFile (nénten perlu kunci API)
-   - **3**: Unggahang ka Bashupload
-   - **4**: Unggahang ka Devuploads
+   - **3**: Unggahang ka Bashupload (Wantah dados kaanggen/kaunduh apisan)
+   - **4**: Unggahang ka Devuploads (kaperluang kunci API)
 
 3. **Ngicenin Gatra sane Kaperluang**
 
@@ -73,6 +73,7 @@ Unggahang nomer sané kapilih: 1
 Ketik kunci API Pixeldrain ragane: kunci_api_sametoné
 Ketik berkas sane jagi kaunggahang: /path/to/your/file.txt
 Ngunggahang /path/to/your/file.txt ka PixelDrain.com
+Kunci API Pixeldrain valid!
 Berkas puniki sampun prasida kaunggahang!
 URL berkas ragane:: https://pixeldrain.com/u/file
 
@@ -91,13 +92,14 @@ URL berkas ragane: https://bashupload.com/?/file
 Unggahang nomer sané kapilih: 4
 Ketik berkas sane jagi kaunggahang: /path/to/your/file.txt
 Ngunggahang /path/to/your/file.txt ka Devuploads.com
+Kunci API Devuploads valid!
 Berkas puniki sampun prasida kaunggahang!
 URL berkas ragane: https://devuploads.com/file
 ```
 
 ## Penanganan Kaiwangan
 
-- **Pikobet Kunci API**: Pastikayang Sameton ngicénin kunci API sané patut anggén PixelDrain.
+- **Pikobet Kunci API**: Pastikayang Sameton ngicénin kunci API sané patut anggén PixelDrain lan Devuploads.
 - **Masalah Jalur Berkas**: Pastikayang jalur berkas sampun patut lan berkas punika wenten.
 
 ## Makontribusi

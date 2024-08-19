@@ -7,7 +7,7 @@
 - **Upload to PixelDrain**: Requires an API key for authentication.
 - **Upload to GoFile**: Automatically selects a server for upload.
 - **Upload to Bashupload**: Files are stored for 3 days and can be downloaded only once.
-- **Upload to Devuploads**
+- **Upload to Devuploads**: Requires an API key for authentication.
 
 ## Requirements
 
@@ -43,7 +43,7 @@
 
    - **1**: Upload to PixelDrain (API key required)
    - **2**: Upload to GoFile (no API key required)
-   - **3**: Upload to Bashupload
+   - **3**: Upload to Bashupload (Can only be used/downloaded once)
    - **4**: Upload to Devuploads (API key required)
 
 3. **Provide Necessary Information**
@@ -73,6 +73,7 @@ Enter the number of your choice: 1
 Enter your Pixeldrain API key: your_api_key_here
 Enter the path to the file you want to upload: /path/to/your/file.txt
 Uploading /path/to/your/file.txt to PixelDrain.com
+Kunci API Pixeldrain valid!
 File uploaded successfully!
 Your file URL: https://pixeldrain.com/u/file
 
@@ -91,13 +92,14 @@ Your file URL: https://bashupload.com/?/file
 Enter the number of your choice: 4
 Enter the path to the file you want to upload: /path/to/your/file.txt
 Uploading /path/to/your/file.txt to Devuploads.com
+Kunci API Devuploads valid!
 File uploaded successfully!
 Your file URL: https://devuploads.com/file
 ```
 
 ## Error Handling
 
-- **API Key Issues**: Ensure you provide a valid API key for PixelDrain.
+- **API Key Issues**: Ensure you provide a valid API key for PixelDrain and Devuploads.
 - **File Path Issues**: Make sure the file path is correct and the file exists.
 
 ## Contributing
