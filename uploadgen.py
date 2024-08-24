@@ -2,18 +2,19 @@
 
 import os
 import sys
+import argparse
 import requests
 import base64
 
 def upload_pixeldrain(api_key, file_path):
-    print(f"[⌛] Ngunggahang {file_path} ka Pixeldrain.com . . .")
+    print(f"[⌛] Mengunggah {file_path} ke Pixeldrain.com . . .")
 
-    # Validate API key using the adapted method
+    # Validasi kunci API menggunakan metode yang diadaptasi
     try:
-        # Encode the API key to Base64
+        # Encode kunci API ke Base64
         encoded_api_key = base64.b64encode(f":{api_key}".encode()).decode()
 
-        # Use the Authorization header with the encoded key
+        # Gunakan header Authorization dengan kunci yang ter-encode
         check_api_response = requests.get(
             "https://pixeldrain.com/api/user/files",
             headers={
@@ -23,13 +24,13 @@ def upload_pixeldrain(api_key, file_path):
         if check_api_response.status_code == 200:
             print("[✔️] Kunci API Pixeldrain valid!")
         else:
-            print(f"[❌] Kunci API Pixeldrain nenten valid! Kode status: {check_api_response.status_code}")
+            print(f"[❌] Kunci API Pixeldrain tidak valid! Kode status: {check_api_response.status_code}")
             return
     except requests.exceptions.RequestException as e:
-        print(f"[❌] Gagal antuk mariksa kunci API: {e}")
+        print(f"[❌] Gagal memeriksa kunci API: {e}\n")
         return
 
-    # Proceed with file upload
+    # Lanjutkan dengan mengunggah file
     try:
         with open(file_path, 'rb') as f:
             response = requests.post(
@@ -41,28 +42,28 @@ def upload_pixeldrain(api_key, file_path):
         response_json = response.json()
         file_id = response_json.get('id')
         if file_id:
-            print("[✔️] Berkas puniki sampun prasida kaunggahang!")
-            print(f"[🔗] URL berkas ragane: https://pixeldrain.com/u/{file_id}")
+            print("[✔️] Berkas berhasil diunggah!")
+            print(f"[🔗] URL berkas Anda: https://pixeldrain.com/u/{file_id}\n")
         else:
-            print("[❌] Gagal ngunggahang.")
+            print("[❌] Gagal mengunggah.")
     except requests.exceptions.SSLError as ssl_err:
-        print(f"[❌] Gagal ngunggahang berkas: Masalah SSL. Pesan kesalahan: {ssl_err}")
+        print(f"[❌] Gagal mengunggah berkas: Masalah SSL. Pesan kesalahan: {ssl_err}\n")
     except requests.exceptions.RequestException as e:
-        print(f"[❌] Gagal ngunggahang berkas: {e}")
+        print(f"[❌] Gagal mengunggah berkas: {e}\n")
     except requests.exceptions.JSONDecodeError:
-        print("[❌] Nenten prasida nlatarang pasaut dados JSON.")
+        print("[❌] Tidak dapat menguraikan respons sebagai JSON.\n")
     except Exception as e:
-        print(f"[❌] Wénten kaiwangan sané nénten katenger: {e}")
+        print(f"[❌] Terjadi kesalahan yang tidak diketahui: {e}\n")
         sys.exit(1)
 
 def upload_gofile(file_path):
-    print(f"[⌛] Ngunggahang {file_path} ka Gofile.io . . .")
+    print(f"[⌛] Mengunggah {file_path} ke Gofile.io . . .")
     try:
         server_response = requests.get("https://api.gofile.io/servers")
         server_response.raise_for_status()
         server = server_response.json()['data']['servers'][0]['name']
     except requests.RequestException as e:
-        print(f"[❌] Gagal antuk ngamolihang informasi server: {e}")
+        print(f"[❌] Gagal mendapatkan informasi server: {e}\n")
         sys.exit(1)
 
     try:
@@ -73,14 +74,14 @@ def upload_gofile(file_path):
             )
             upload_response.raise_for_status()
         link = upload_response.json()['data']['downloadPage']
-        print("[✔️] Berkas puniki sampun prasida kaunggahang!")
-        print(f"[🔗] URL berkas ragane: {link}")
+        print("[✔️] Berkas berhasil diunggah!")
+        print(f"[🔗] URL berkas Anda: {link}\n")
     except requests.RequestException as e:
-        print(f"[❌] Nenten prasida ngunggahang berkas: {e}")
+        print(f"[❌] Gagal mengunggah berkas: {e}\n")
         sys.exit(1)
 
 def upload_bashupload(file_path):
-    print(f"[⌛] Ngunggahang {file_path} ka Bashupload.com . . .")
+    print(f"[⌛] Mengunggah {file_path} ke Bashupload.com . . .")
     try:
         with open(file_path, 'rb') as f:
             response = requests.post(
@@ -88,7 +89,7 @@ def upload_bashupload(file_path):
                 files={'file': f}
             )
         response.raise_for_status()
-        # Extract URL from response
+        # Ekstrak URL dari respons
         response_text = response.text
         url_start = response_text.find("https://bashupload.com/")
         if url_start != -1:
@@ -96,20 +97,20 @@ def upload_bashupload(file_path):
             if url_end == -1:
                 url_end = len(response_text)
             link = response_text[url_start:url_end].strip()
-            print("[✔️] Berkas puniki sampun prasida kaunggahang!")
-            print(f"[🔗] URL berkas ragane: {link}")
+            print("[✔️] Berkas berhasil diunggah!")
+            print(f"[🔗] URL berkas Anda: {link}\n")
         else:
-            print("[❌] Gagal ngunggahang berkas. URL nenten kapanggihin.")
+            print("[❌] Gagal mengunggah berkas. URL tidak ditemukan.\n")
     except requests.RequestException as e:
-        print(f"[❌] Nenten prasida ngunggahang berkas: {e}")
+        print(f"[❌] Gagal mengunggah berkas: {e}\n")
         sys.exit(1)
 
 def upload_devuploads(api_key, file_path):
-    print(f"[⌛] Ngunggahang {file_path} ka Devuploads.com . . .")
+    print(f"[⌛] Mengunggah {file_path} ke Devuploads.com . . .")
     url = "https://devuploads.com/api/upload/server"
 
     try:
-        # Validate API key
+        # Validasi kunci API
         check_response = requests.get(f"{url}?key={api_key}")
         check_response.raise_for_status()
         res_json = check_response.json()
@@ -121,19 +122,19 @@ def upload_devuploads(api_key, file_path):
         if res_status == 200:
             print("[✔️] Kunci API Devuploads valid!")
             if not sess_id or not server_url:
-                print(f"[❌] Informasi server nenten prasida. Kunci API valid tapi server informasi kosong.")
+                print(f"[❌] Informasi server tidak tersedia. Kunci API valid tetapi informasi server kosong.")
                 return
         else:
-            print(f"[❌] Kunci API Devuploads nenten valid! Kode status: {res_status}")
+            print(f"[❌] Kunci API Devuploads tidak valid! Kode status: {res_status}")
             return
 
-        # Check file size
+        # Periksa ukuran file
         file_size = os.path.getsize(file_path)
         if file_size == 0:
-            print(f"[❌] File {file_path} nenten madaging informasi napi-napi.\n[❌] Devuploads nenten prasida ngunggahang berkas nganggen 0 bytes")
+            print(f"[❌] File {file_path} tidak memiliki isi apapun.\n[❌] Devuploads tidak dapat mengunggah berkas dengan ukuran 0 byte")
             return
 
-        # Proceed with file upload
+        # Lanjutkan dengan mengunggah file
         with open(file_path, 'rb') as f:
             upload_response = requests.post(
                 server_url,
@@ -151,88 +152,169 @@ def upload_devuploads(api_key, file_path):
         file_status = upload_response_json.get("file_status")
 
         if file_code == 'undef':
-            print(f"[❌] Gagal ngunggahang: {file_status}")
+            print(f"[❌] Gagal mengunggah: {file_status}\n")
         elif file_code:
-            print("[✔️] Berkas puniki sampun prasida kaunggahang!")
-            print(f"[🔗] URL berkas ragane: https://devuploads.com/{file_code}")
+            print("[✔️] Berkas berhasil diunggah!")
+            print(f"[🔗] URL berkas Anda: https://devuploads.com/{file_code}\n")
         else:
-            print(f"[❌] Gagal ngunggahang: {upload_response_json}")
+            print(f"[❌] Gagal mengunggah: {upload_response_json}\n")
 
     except requests.RequestException as e:
-        print(f"[❌] Nenten prasida ngunggahang berkas: {e}")
+        print(f"[❌] Gagal mengunggah berkas: {e}\n")
         sys.exit(1)
 
-def main():
+# ASCII art
+pixeldrain_art = """
+ ____  _          _     _           _                            
+|  _ \(_)_  _____| | __| |_ __ __ _(_)_ __    ___ ___  _ __ ___  
+| |_) | \ \/ / _ \ |/ _` | '__/ _` | | '_ \  / __/ _ \| '_ ` _ \ 
+|  __/| |>  <  __/ | (_| | | | (_| | | | | || (_| (_) | | | | | |
+|_|   |_/_/\_\___|_|\__,_|_|  \__,_|_|_| |_(_)___\___/|_| |_| |_|
+"""
+
+gofile_art = """
+  ____        __ _ _        _       
+ / ___| ___  / _(_) | ___  (_) ___  
+| |  _ / _ \| |_| | |/ _ \ | |/ _ \ 
+| |_| | (_) |  _| | |  __/_| | (_) |
+ \____|\___/|_| |_|_|\___(_)_|\___/ 
+"""
+
+bashupload_art = """
+ ____            _                 _                 _                      
+| __ )  __ _ ___| |__  _   _ _ __ | | ___   __ _  __| |  ___ ___  _ __ ___  
+|  _ \ / _` / __| '_ \| | | | '_ \| |/ _ \ / _` |/ _` | / __/ _ \| '_ ` _ \ 
+| |_) | (_| \__ \ | | | |_| | |_) | | (_) | (_| | (_| || (_| (_) | | | | | |
+|____/ \__,_|___/_| |_|\__,_| .__/|_|\___/ \__,_|\__,_(_)___\___/|_| |_| |_|
+                            |_|                                              
+"""
+
+devuploads_art = """
+ ____                         _                 _                          
+|  _ \  _____   ___   _ _ __ | | ___   __ _  __| |___   ___ ___  _ __ ___  
+| | | |/ _ \ \ / / | | | '_ \| |/ _ \ / _` |/ _` / __| / __/ _ \| '_ ` _ \ 
+| |_| |  __/\ V /| |_| | |_) | | (_) | (_| | (_| \__ \| (_| (_) | | | | | |
+|____/ \___| \_/  \__,_| .__/|_|\___/ \__,_|\__,_|___(_)___\___/|_| |_| |_|
+                       |_|                                                 
+"""
+
+def print_ascii_art(service):
+    if service == 1:
+        print(pixeldrain_art)
+    elif service == 2:
+        print(gofile_art)
+    elif service == 3:
+        print(bashupload_art)
+    elif service == 4:
+        print(devuploads_art)
+
+def interactive_mode():
     print("\033[92m" + """
-UploadGen v1.3
-olih officialputuid   
+ _   _       _                 _  ____            
+| | | |_ __ | | ___   __ _  __| |/ ___| ___ _ __  
+| | | | '_ \| |/ _ \ / _` |/ _` | |  _ / _ \ '_ \ 
+| |_| | |_) | | (_) | (_| | (_| | |_| |  __/ | | |
+ \___/| .__/|_|\___/ \__,_|\__,_|\____|\___|_| |_|
+      |_|                                         
+
+Versi: v1.4
+oleh officialputuid   
     """ + "\033[0m")
 
     while True:
-        print("Pilih UploadGen antuk:")
-        print("1. Pixeldrain.com (Nyaratang API)")
+        print("Pilih layanan untuk mengunggah:")
+        print("1. Pixeldrain.com (Memerlukan API)")
         print("2. GoFile.io")
-        print("3. Bashupload.com (Wantah dados kaanggen/kaunduh apisan)")
-        print("4. Devuploads.com (Nyaratang API)")
+        print("3. Bashupload.com (Sementara)")
+        print("4. Devuploads.com (Memerlukan API)")
 
         try:
-            choice = input("\n[❓] Ketik nomor sane pilih ragane: ")
+            choice = input("\n[❓] Masukkan nomor pilihan Anda: ")
+
+            # ASCII
+            print_ascii_art(int(choice)) 
 
             if choice == '1':
                 while True:
-                    print("\n[🛈] Ragane sampun milih:\n[1] Pixeldrain.com (Nyaratang API)\n")
-                    api_key = input("[🔑] Ketik kunci API Pixeldrain ragane: ").strip()
+                    print("\n[🛈] Anda memilih:\n[1] Pixeldrain.com (Memerlukan API)\n")
+                    api_key = input("[🔑] Masukkan kunci API Pixeldrain Anda: ").strip()
                     if api_key:
                         break
-                    print("[❌] Kunci API nenten dados kosong. Indayang ngranjingang kunci API sane patut.")
+                    print("[❌] Kunci API tidak boleh kosong. Silakan masukkan kunci API yang benar.")
+                upload_pixeldrain(api_key, get_file_path())
             elif choice == '2':
-                print("[🛈] Ragane sampun milih:\n[2] GoFile.io\n")
-                api_key = None
+                print("[🛈] Anda memilih:\n[2] GoFile.io\n")
+                upload_gofile(get_file_path())
             elif choice == '3':
-                print("[🛈] Ragane sampun milih:\n[3] Bashupload.com\n[🛈] Wantah dados kaanggen/kaunduh apisan\n")
-                api_key = None
+                print("[🛈] Anda memilih:\n[3] Bashupload.com\n[🛈] File disimpan selama 3 hari dan hanya bisa diunduh sekali.\n")
+                upload_bashupload(get_file_path())
             elif choice == '4':
                 while True:
-                    print("\n[🛈] Ragane sampun milih:\n[4] Devuploads.com (Nyaratang API)\n[🛈] Devuploads nenten prasida ngunggahang berkas nganggen 0 byte\n")
-                    api_key = input("[🔑] Ketik kunci API Devuploads ragane: ").strip()
+                    print("\n[🛈] Anda memilih:\n[4] Devuploads.com (Memerlukan API)\n[🛈] Devuploads tidak dapat mengunggah berkas dengan ukuran 0 byte\n")
+                    api_key = input("[🔑] Masukkan kunci API Devuploads Anda: ").strip()
                     if api_key:
                         break
-                    print("[❌] Kunci API nenten dados kosong. Indayang ngranjingang kunci API sane patut.")
+                    print("[❌] Kunci API tidak boleh kosong. Silakan masukkan kunci API yang benar.")
+                upload_devuploads(api_key, get_file_path())
             else:
-                print("[❌] Pilihan sane nenten valid.")
+                print("[❌] Pilihan tidak valid.")
                 sys.exit(1)
 
-            while True:
-                file_path = input("[📁] Ketik berkas sane jagi kaunggahang: ").strip()
-                if file_path and os.path.isfile(os.path.abspath(file_path)):
-                    break
-                print("[❌] Berkas nenten katemu! Indayang ngranjingang berkas sane patut.")
-
-            file_path = os.path.abspath(file_path)
-
-            if choice == '1':
-                upload_pixeldrain(api_key, file_path)
-            elif choice == '2':
-                upload_gofile(file_path)
-            elif choice == '3':
-                upload_bashupload(file_path)
-            elif choice == '4':
-                upload_devuploads(api_key, file_path)
-
-            # Ask user if they want to upload another file
-            while True:
-                repeat = input("\n[🔄] Ingin ngunggahang berkas malih? (y/n): ").strip().lower()
-                if repeat in ['y', 'n']:
-                    break
-                print("[❌] Pilihan nenten valid. Mangda milih 'y' utawi 'n'.")
-
+            # Tanyakan pengguna apakah ingin mengunggah file lain
+            repeat = input("\n[🔄] Ingin mengunggah file lain? (y/n): ").strip().lower()
             if repeat == 'n':
-                print("[✔️] Program sampun katutup!")
+                print("[✔️] Terimakasih telah menggunakan UploadGen!!\n")
                 break
 
         except KeyboardInterrupt:
-            print("\n[✔️] Program sampun katutup!")
+            print("\n[✔️] Program telah ditutup!\n")
             sys.exit(0)
 
+def get_file_path():
+    while True:
+        file_path = input("[📁] Ketik berkas yang akan diunggah: ").strip()
+        if file_path and os.path.isfile(os.path.abspath(file_path)):
+            return os.path.abspath(file_path)
+        print("[❌] Berkas tidak ditemukan! Harap masukkan berkas yang valid.")
+
+def main():
+    parser = argparse.ArgumentParser(description="Unggah berkas ke berbagai layanan berbagi berkas.")
+    parser.add_argument("-s", "--service", type=int, choices=[1, 2, 3, 4],
+                        help="Pilih layanan: 1=Pixeldrain, 2=GoFile, 3=Bashupload, 4=Devuploads")
+    parser.add_argument("-f", "--file", help="Path berkas yang akan diunggah")
+
+    args = parser.parse_args()
+
+    if args.service and args.file:
+        if not os.path.isfile(os.path.abspath(args.file)):
+            print("\n[❌] Berkas tidak ditemukan!\n")
+            sys.exit(1)
+
+        file_path = os.path.abspath(args.file)
+
+        # ASCII
+        print_ascii_art(args.service)
+
+        if args.service == 1:
+            print("\n[🛈] Anda memilih: [1] Pixeldrain.com (Memerlukan API)\n")
+            api_key = input("[🔑] Masukkan kunci API Pixeldrain Anda: ").strip()
+            upload_pixeldrain(api_key, file_path)
+        elif args.service == 2:
+            print("\n[🛈] Anda memilih: [2] GoFile.io\n")
+            upload_gofile(file_path)
+        elif args.service == 3:
+            print("\n[🛈] Anda memilih: [3] Bashupload.com\n[🛈] File disimpan selama 3 hari dan hanya bisa diunduh sekali.\n")
+            upload_bashupload(file_path)
+        elif args.service == 4:
+            print("\n[🛈] Anda memilih: [4] Devuploads.com (Memerlukan API)\n[🛈] Devuploads tidak dapat mengunggah berkas dengan ukuran 0 byte\n")
+            api_key = input("[🔑] Masukkan kunci API Devuploads Anda: ").strip()
+            upload_devuploads(api_key, file_path)
+    else:
+        interactive_mode()
+
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n[✔️] Program sudah ditutup!\n")
+        sys.exit(0)

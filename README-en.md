@@ -1,111 +1,63 @@
 # UploadGen
 
-`UploadGen` is a Python script designed for easy file uploads to popular file-sharing platforms. This utility simplifies uploading files by providing a straightforward command-line interface.
+**UploadGen** is a versatile Python script designed to simplify file uploads to popular file-sharing platforms through an intuitive command-line interface.
 
 ## Features
 
-- **Upload to PixelDrain**: Requires an API key for authentication.
-- **Upload to GoFile**: Automatically selects a server for upload.
+- **Upload to Pixeldrain**: Upload files with API key authentication.
+- **Upload to GoFile**: Automatically selects an appropriate server for uploading.
 - **Upload to Bashupload**: Files are stored for 3 days and can be downloaded only once.
-- **Upload to Devuploads**: Requires an API key for authentication.
+- **Upload to Devuploads**: Requires API key authentication for file uploads.
 
 ## Requirements
 
 - Python 3.x
-- `requests` library (can be installed via `pip`)
+- `requests` library (installable via `pip`)
 
 ## Installation
 
-1. Clone the repository or download the script file.
+To get started with UploadGen, follow these steps:
 
    ```bash
    git clone https://github.com/officialputuid/UploadGen.git
    cd UploadGen
+   pip install requests
    ```
 
-2. Install the required Python library:
+Alternatively, you can download the script directly:
 
    ```bash
+   wget https://github.com/officialputuid/UploadGen/raw/main/uploadgen.py
    pip install requests
    ```
 
 ## Usage
 
-1. **Run the Script**
+1. **Interactive Mode**
+
+   To start the script and use the interactive menu:
 
    ```bash
    python uploadgen.py
    ```
 
-2. **Choose an Upload Service**
+2. **Command-Line Arguments**
 
-   After starting the script, you will be prompted to choose an upload service:
+   To upload a file directly via command-line arguments:
 
-   - **1**: Upload to PixelDrain (API key required)
-   - **2**: Upload to GoFile (no API key required)
-   - **3**: Upload to Bashupload (Can only be used/downloaded once)
-   - **4**: Upload to Devuploads (API key required)
+   ```bash
+   python uploadgen.py -s [1/2/3/4] -f [file]
+   ```
+   ex: `python uploadgen.py -s 1 -f /path/file.txt`
 
-3. **Provide Necessary Information**
-
-   - For PixelDrain: Enter your API key when prompted.
-   - For GoFile: No API key is needed.
-   - For Bashupload: No API key is needed.
-   - For Devuploads: Enter your API key when prompted.
-
-4. **Specify the File Path**
-
-   Enter the path to the file you want to upload. The script will validate the file path and proceed with the upload.
-
-## Example
-
-```
-UploadGen v1.0
-by officialputuid
-
-Choose an UploadGen to:
-1. Pixeldrain.com (Need API)
-2. GoFile.io
-3. Bashupload.com (Can only be used/downloaded once)
-4. Devuploads.com (Need API)
-
-Enter the number of your choice: 1
-Enter your Pixeldrain API key: your_api_key_here
-Enter the path to the file you want to upload: /path/to/your/file.txt
-Uploading /path/to/your/file.txt to PixelDrain.com
-Kunci API Pixeldrain valid!
-File uploaded successfully!
-Your file URL: https://pixeldrain.com/u/file
-
-Enter the number of your choice: 2
-Enter the path to the file you want to upload: /path/to/your/file.txt
-Uploading /path/to/your/file.txt to GoFile.io
-File uploaded successfully!
-Your file URL: https://gofile.io/d/file
-
-Enter the number of your choice: 3
-Enter the path to the file you want to upload: /path/to/your/file.txt
-Uploading /path/to/your/file.txt to Bashupload.com
-File uploaded successfully!
-Your file URL: https://bashupload.com/?/file
-
-Enter the number of your choice: 4
-Enter the path to the file you want to upload: /path/to/your/file.txt
-Uploading /path/to/your/file.txt to Devuploads.com
-Kunci API Devuploads valid!
-File uploaded successfully!
-Your file URL: https://devuploads.com/file
-```
-
-## Error Handling
-
-- **API Key Issues**: Ensure you provide a valid API key for PixelDrain and Devuploads.
-- **File Path Issues**: Make sure the file path is correct and the file exists.
-
-## Contributing
-
-Feel free to submit issues or pull requests to improve the script. Please ensure your changes are well-tested before submitting.
+- `-h`: UploadGen Guide
+- `-s [1/2/3/4]`: Select service:
+  - `1` for Pixeldrain
+  - `2` for GoFile
+  - `3` for Bashupload
+  - `4` for Devuploads
+- `-f [file]`: Specifies the path to the file you want to upload.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
