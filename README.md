@@ -1,6 +1,6 @@
 # UploadGen
 
-**UploadGen** adalah skrip Python yang serbaguna dirancang untuk menyederhanakan proses unggah file ke platform berbagi file populer melalui antarmuka baris perintah yang intuitif.
+**UploadGen** adalah skrip Python yang serbaguna dirancang untuk menyederhanakan proses unggah file ke platform berbagi file populer melalui antarmuka baris perintah yang intuitif. [EN](README-en.md)
 
 ## Fitur
 
@@ -27,7 +27,7 @@ Untuk memulai dengan UploadGen, ikuti langkah-langkah berikut:
 Atau, Anda dapat mengunduh skrip secara langsung:
 
    ```bash
-   wget https://github.com/officialputuid/UploadGen/raw/main/uploadgen.py
+   wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py
    pip install requests
    ```
 
@@ -48,7 +48,7 @@ Untuk mengunggah file langsung menggunakan argumen baris perintah:
    ```bash
    python uploadgen.py -s [1/2/3/4] -f [file]
    ```
-   contoh: `python uploadgen.py -s 1 -f /path/file.txt`
+   contoh: `python uploadgen.py -s 2 -f /path/file.txt`
 
 - `-h`: Panduan UploadGen
 - `-s [1/2/3/4]`: Memilih layanan:

@@ -27,7 +27,7 @@ To get started with UploadGen, follow these steps:
 Alternatively, you can download the script directly:
 
    ```bash
-   wget https://github.com/officialputuid/UploadGen/raw/main/uploadgen.py
+   wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py
    pip install requests
    ```
 
@@ -48,7 +48,7 @@ Alternatively, you can download the script directly:
    ```bash
    python uploadgen.py -s [1/2/3/4] -f [file]
    ```
-   ex: `python uploadgen.py -s 1 -f /path/file.txt`
+   ex: `python uploadgen.py -s 2 -f /path/file.txt`
 
 - `-h`: UploadGen Guide
 - `-s [1/2/3/4]`: Select service:

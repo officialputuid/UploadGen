@@ -261,9 +261,9 @@ oleh officialputuid
                 sys.exit(1)
 
             # Tanyakan pengguna apakah ingin mengunggah file lain
-            repeat = input("\n[🔄] Ingin mengunggah file lain? (y/n): ").strip().lower()
+            repeat = input("[🔄] Ingin mengunggah file lain? (y/n): ").strip().lower()
             if repeat == 'n':
-                print("[✔️] Terimakasih telah menggunakan UploadGen!!\n")
+                print("[✔️] Terimakasih telah menggunakan UploadGen!\n")
                 break
 
         except KeyboardInterrupt:
