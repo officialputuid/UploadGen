@@ -21,14 +21,14 @@ To get started with UploadGen, follow these steps:
    ```bash
    git clone https://github.com/officialputuid/UploadGen.git
    cd UploadGen
-   python3 uploadgen.py or python uploadgen.py -s [1/2/3/4/5] -f [file]
+   python3 uploadgen.py or python uploadgen.py -s [1/2/3/4/5/6] -f [file]
    ```
 
 Alternatively, you can download the script directly:
 
    ```bash
    wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py
-   python3 uploadgen.py / python uploadgen.py -s [1/2/3/4/5] -f [file]
+   python3 uploadgen.py / python uploadgen.py -s [1/2/3/4/5/6] -f [file]
    ```
 
 ## Usage
@@ -46,7 +46,7 @@ Alternatively, you can download the script directly:
    To upload a file directly via command-line arguments:
 
    ```bash
-   python uploadgen.py -s [1/2/3/4/5] -f [file]
+   python uploadgen.py -s [1/2/3/4/5/6] -f [file]
    ```
    ex: `python uploadgen.py -s 2 -f /path/file.txt`
 
@@ -57,6 +57,7 @@ Alternatively, you can download the script directly:
   - `3` for Bashupload.com
   - `4` for Devuploads.com
   - `5` for File.io
+  - `6` for Uguu.se
 - `-f [file]`: Specifies the path to the file you want to upload.
 
 ## License

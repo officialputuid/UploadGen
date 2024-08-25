@@ -21,14 +21,14 @@ Untuk memulai dengan UploadGen, ikuti langkah-langkah berikut:
    ```bash
    git clone https://github.com/officialputuid/UploadGen.git
    cd UploadGen
-   python3 uploadgen.py or python uploadgen.py -s [1/2/3/4/5] -f [file]
+   python3 uploadgen.py or python uploadgen.py -s [1/2/3/4/5/6] -f [file]
    ```
 
 Atau, Anda dapat mengunduh skrip secara langsung:
 
    ```bash
    wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py
-   python3 uploadgen.py / python uploadgen.py -s [1/2/3/4/5] -f [file]
+   python3 uploadgen.py / python uploadgen.py -s [1/2/3/4/5/6] -f [file]
    ```
 
 ## Penggunaan
@@ -46,7 +46,7 @@ Untuk menjalankan skrip dan menggunakan menu interaktif:
 Untuk mengunggah file langsung menggunakan argumen baris perintah:
 
    ```bash
-   python3 uploadgen.py -s [1/2/3/4/5] -f [file]
+   python3 uploadgen.py -s [1/2/3/4/5/6] -f [file]
    ```
    contoh: `python uploadgen.py -s 2 -f /path/file.txt`
 
@@ -57,6 +57,7 @@ Untuk mengunggah file langsung menggunakan argumen baris perintah:
   - `3` untuk Bashupload.com
   - `4` untuk Devuploads.com
   - `5` untuk File.io
+  - `6` untuk Uguu.se
 - `-f [file]`: Menentukan jalur ke file yang ingin Anda unggah.
 
 ## Lisensi

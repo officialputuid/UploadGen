@@ -179,6 +179,29 @@ def upload_fileio(file_path):
         print(f"[❌] Failed to upload file: {e}\n")
         sys.exit(1)
 
+def upload_uguu(file_path):
+    print(f"[⌛] Uploading {file_path} to Uguu.se . . .")
+    try:
+        with open(file_path, 'rb') as f:
+            upload_response = requests.post(
+                'https://uguu.se/upload',
+                files={'files[]': f}
+            )
+            upload_response.raise_for_status()
+
+        # Process response to get download link
+        response_json = upload_response.json()
+        if response_json.get('success'):
+            file_url = response_json['files'][0]['url']
+            print("[✔️] File successfully uploaded!")
+            print(f"[🔗] Your file URL: {file_url}\n")
+        else:
+            print(f"[❌] Failed to upload file: {response_json}\n")
+            sys.exit(1)
+    except requests.RequestException as e:
+        print(f"[❌] Failed to upload file: {e}\n")
+        sys.exit(1)
+
 # ASCII art
 pixeldrain_art = "\033[92m" + r"""
  ____  _          _     _           _                            
@@ -222,6 +245,15 @@ file_art = "\033[92m" + r"""
 |_|   |_|_|\___(_)_|\___/ 
 """ + "\033[0m"
 
+uguu_art = "\033[92m" + r"""
+ _   _                              
+| | | | __ _ _   _ _   _   ___  ___ 
+| | | |/ _` | | | | | | | / __|/ _ \
+| |_| | (_| | |_| | |_| |_\__ \  __/
+ \___/ \__, |\__,_|\__,_(_)___/\___|
+       |___/                      
+""" + "\033[0m"
+  
 def print_ascii_art(service):
     if service == 1:
         print(pixeldrain_art)
@@ -233,6 +265,8 @@ def print_ascii_art(service):
         print(devuploads_art)
     elif service == 5:
         print(file_art)
+    elif service == 6:
+        print(uguu_art)
 
 def interactive_mode():
     print("\033[92m" + r"""
@@ -243,7 +277,7 @@ def interactive_mode():
  \___/| .__/|_|\___/ \__,_|\__,_|\____|\___|_| |_|
       |_|                                         
 
-Versi: v1.5
+Versi: v1.6
 oleh officialputuid   
     """ + "\033[0m")
 
@@ -254,6 +288,7 @@ oleh officialputuid
         print("3. Bashupload.com (Sementara)")
         print("4. Devuploads.com (Memerlukan API)")
         print("5. File.io")
+        print("6. Uguu.se")
 
         try:
             choice = input("\n[❓] Masukkan nomor pilihan Anda: ")
@@ -286,6 +321,9 @@ oleh officialputuid
             elif choice == '5':
                 print("[🛈] Anda memilih:\n[5] File.io\n")
                 upload_fileio(get_file_path())
+            elif choice == '6':
+                print("[🛈] Anda memilih:\n[6] Uguu.se\n")
+                upload_uguu(get_file_path())
             else:
                 print("[❌] Pilihan tidak valid.")
                 sys.exit(1)
@@ -309,8 +347,8 @@ def get_file_path():
 
 def main():
     parser = argparse.ArgumentParser(description="Unggah berkas ke berbagai layanan berbagi berkas.")
-    parser.add_argument("-s", "--service", type=int, choices=[1, 2, 3, 4, 5],
-                        help="Pilih layanan: 1=Pixeldrain, 2=GoFile, 3=Bashupload, 4=Devuploads 5=File")
+    parser.add_argument("-s", "--service", type=int, choices=[1, 2, 3, 4, 5, 6],
+                        help="Pilih layanan: 1=Pixeldrain, 2=GoFile, 3=Bashupload, 4=Devuploads, 5=File, 6=Uguu")
     parser.add_argument("-f", "--file", help="Path berkas yang akan diunggah")
 
     args = parser.parse_args()
@@ -342,6 +380,9 @@ def main():
         elif args.service == 5:
             print("\n[🛈] Anda memilih: [5] File.io\n")
             upload_fileio(file_path)
+        elif args.service == 6:
+            print("\n[🛈] Anda memilih: [6] Uguu.se\n")
+            upload_uguu(file_path)
     else:
         interactive_mode()
 
