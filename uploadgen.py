@@ -163,40 +163,64 @@ def upload_devuploads(api_key, file_path):
         print(f"[❌] Gagal mengunggah berkas: {e}\n")
         sys.exit(1)
 
+def upload_fileio(file_path):
+    print(f"[⌛] Uploading {file_path} to File.io . . .")
+    try:
+        with open(file_path, 'rb') as f:
+            upload_response = requests.post(
+                'https://file.io',
+                files={'file': f}
+            )
+            upload_response.raise_for_status()
+        link = upload_response.json()['link']
+        print("[✔️] File successfully uploaded!")
+        print(f"[🔗] Your file URL: {link}\n")
+    except requests.RequestException as e:
+        print(f"[❌] Failed to upload file: {e}\n")
+        sys.exit(1)
+
 # ASCII art
-pixeldrain_art = r"""
+pixeldrain_art = "\033[92m" + r"""
  ____  _          _     _           _                            
 |  _ \(_)_  _____| | __| |_ __ __ _(_)_ __    ___ ___  _ __ ___  
 | |_) | \ \/ / _ \ |/ _` | '__/ _` | | '_ \  / __/ _ \| '_ ` _ \ 
 |  __/| |>  <  __/ | (_| | | | (_| | | | | || (_| (_) | | | | | |
 |_|   |_/_/\_\___|_|\__,_|_|  \__,_|_|_| |_(_)___\___/|_| |_| |_|
-"""
+""" + "\033[0m"
 
-gofile_art = r"""
+gofile_art = "\033[92m" + r"""
   ____        __ _ _        _       
  / ___| ___  / _(_) | ___  (_) ___  
 | |  _ / _ \| |_| | |/ _ \ | |/ _ \ 
 | |_| | (_) |  _| | |  __/_| | (_) |
  \____|\___/|_| |_|_|\___(_)_|\___/ 
-"""
+""" + "\033[0m"
 
-bashupload_art = r"""
+bashupload_art = "\033[92m" + r"""
  ____            _                 _                 _                      
 | __ )  __ _ ___| |__  _   _ _ __ | | ___   __ _  __| |  ___ ___  _ __ ___  
 |  _ \ / _` / __| '_ \| | | | '_ \| |/ _ \ / _` |/ _` | / __/ _ \| '_ ` _ \ 
 | |_) | (_| \__ \ | | | |_| | |_) | | (_) | (_| | (_| || (_| (_) | | | | | |
 |____/ \__,_|___/_| |_|\__,_| .__/|_|\___/ \__,_|\__,_(_)___\___/|_| |_| |_|
                             |_|                                              
-"""
+""" + "\033[0m"
 
-devuploads_art = r"""
+devuploads_art = "\033[92m" + r"""
  ____                         _                 _                          
 |  _ \  _____   ___   _ _ __ | | ___   __ _  __| |___   ___ ___  _ __ ___  
 | | | |/ _ \ \ / / | | | '_ \| |/ _ \ / _` |/ _` / __| / __/ _ \| '_ ` _ \ 
 | |_| |  __/\ V /| |_| | |_) | | (_) | (_| | (_| \__ \| (_| (_) | | | | | |
 |____/ \___| \_/  \__,_| .__/|_|\___/ \__,_|\__,_|___(_)___\___/|_| |_| |_|
                        |_|                                                 
-"""
+""" + "\033[0m"
+
+file_art = "\033[92m" + r"""
+ _____ _ _        _       
+|  ___(_) | ___  (_) ___  
+| |_  | | |/ _ \ | |/ _ \ 
+|  _| | | |  __/_| | (_) |
+|_|   |_|_|\___(_)_|\___/ 
+""" + "\033[0m"
 
 def print_ascii_art(service):
     if service == 1:
@@ -207,6 +231,8 @@ def print_ascii_art(service):
         print(bashupload_art)
     elif service == 4:
         print(devuploads_art)
+    elif service == 5:
+        print(file_art)
 
 def interactive_mode():
     print("\033[92m" + r"""
@@ -217,7 +243,7 @@ def interactive_mode():
  \___/| .__/|_|\___/ \__,_|\__,_|\____|\___|_| |_|
       |_|                                         
 
-Versi: v1.4
+Versi: v1.5
 oleh officialputuid   
     """ + "\033[0m")
 
@@ -227,6 +253,7 @@ oleh officialputuid
         print("2. GoFile.io")
         print("3. Bashupload.com (Sementara)")
         print("4. Devuploads.com (Memerlukan API)")
+        print("5. File.io")
 
         try:
             choice = input("\n[❓] Masukkan nomor pilihan Anda: ")
@@ -256,6 +283,9 @@ oleh officialputuid
                         break
                     print("[❌] Kunci API tidak boleh kosong. Silakan masukkan kunci API yang benar.")
                 upload_devuploads(api_key, get_file_path())
+            elif choice == '5':
+                print("[🛈] Anda memilih:\n[5] File.io\n")
+                upload_fileio(get_file_path())
             else:
                 print("[❌] Pilihan tidak valid.")
                 sys.exit(1)
@@ -279,8 +309,8 @@ def get_file_path():
 
 def main():
     parser = argparse.ArgumentParser(description="Unggah berkas ke berbagai layanan berbagi berkas.")
-    parser.add_argument("-s", "--service", type=int, choices=[1, 2, 3, 4],
-                        help="Pilih layanan: 1=Pixeldrain, 2=GoFile, 3=Bashupload, 4=Devuploads")
+    parser.add_argument("-s", "--service", type=int, choices=[1, 2, 3, 4, 5],
+                        help="Pilih layanan: 1=Pixeldrain, 2=GoFile, 3=Bashupload, 4=Devuploads 5=File")
     parser.add_argument("-f", "--file", help="Path berkas yang akan diunggah")
 
     args = parser.parse_args()
@@ -309,6 +339,9 @@ def main():
             print("\n[🛈] Anda memilih: [4] Devuploads.com (Memerlukan API)\n[🛈] Devuploads tidak dapat mengunggah berkas dengan ukuran 0 byte\n")
             api_key = input("[🔑] Masukkan kunci API Devuploads Anda: ").strip()
             upload_devuploads(api_key, file_path)
+        elif args.service == 5:
+            print("\n[🛈] Anda memilih: [5] File.io\n")
+            upload_fileio(file_path)
     else:
         interactive_mode()
 
