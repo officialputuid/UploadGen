@@ -4,10 +4,12 @@
 
 ## Fitur
 
-- **Unggah ke Pixeldrain**: Memerlukan otentikasi kunci API untuk unggah file.
-- **Unggah ke GoFile**: Secara otomatis memilih server yang sesuai untuk unggah.
-- **Unggah ke Bashupload**: File disimpan selama 3 hari dan hanya dapat diunduh sekali.
-- **Unggah ke Devuploads**: Memerlukan otentikasi kunci API untuk unggah file.
+- **Unggah ke Pixeldrain.com**
+- **Unggah ke GoFile.io**
+- **Unggah ke Bashupload.com**
+- **Unggah ke Devuploads.com**
+- **Unggah ke File.io**
+- **Unggah ke Uguu.se**
 
 ## Persyaratan
 
@@ -51,7 +53,7 @@ Untuk mengunggah file langsung menggunakan argumen baris perintah:
    contoh: `python uploadgen.py -s 2 -f /path/file.txt`
 
 - `-h`: Panduan UploadGen
-- `-s [1/2/3/4]`: Memilih layanan:
+- `-s [1/2/3/4/5/6]`: Memilih layanan:
   - `1` untuk Pixeldrain.com
   - `2` untuk GoFile.io
   - `3` untuk Bashupload.com

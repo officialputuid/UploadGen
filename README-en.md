@@ -4,10 +4,12 @@
 
 ## Features
 
-- **Upload to Pixeldrain**: Upload files with API key authentication.
-- **Upload to GoFile**: Automatically selects an appropriate server for uploading.
-- **Upload to Bashupload**: Files are stored for 3 days and can be downloaded only once.
-- **Upload to Devuploads**: Requires API key authentication for file uploads.
+- **Upload to Pixeldrain.com**
+- **Upload to GoFile.io**
+- **Upload to Bashupload.com**
+- **Upload to Devuploads.com**
+- **Upload to File.io**
+- **Upload to Uguu.se**
 
 ## Requirements
 
@@ -51,7 +53,7 @@ Alternatively, you can download the script directly:
    ex: `python uploadgen.py -s 2 -f /path/file.txt`
 
 - `-h`: UploadGen Guide
-- `-s [1/2/3/4]`: Select service:
+- `-s [1/2/3/4/5/6]`: Select service:
   - `1` for Pixeldrain.com
   - `2` for GoFile.io
   - `3` for Bashupload.com
