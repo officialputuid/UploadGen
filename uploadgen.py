@@ -164,7 +164,7 @@ def upload_devuploads(api_key, file_path):
         sys.exit(1)
 
 # ASCII art
-pixeldrain_art = """
+pixeldrain_art = r"""
  ____  _          _     _           _                            
 |  _ \(_)_  _____| | __| |_ __ __ _(_)_ __    ___ ___  _ __ ___  
 | |_) | \ \/ / _ \ |/ _` | '__/ _` | | '_ \  / __/ _ \| '_ ` _ \ 
@@ -172,7 +172,7 @@ pixeldrain_art = """
 |_|   |_/_/\_\___|_|\__,_|_|  \__,_|_|_| |_(_)___\___/|_| |_| |_|
 """
 
-gofile_art = """
+gofile_art = r"""
   ____        __ _ _        _       
  / ___| ___  / _(_) | ___  (_) ___  
 | |  _ / _ \| |_| | |/ _ \ | |/ _ \ 
@@ -180,7 +180,7 @@ gofile_art = """
  \____|\___/|_| |_|_|\___(_)_|\___/ 
 """
 
-bashupload_art = """
+bashupload_art = r"""
  ____            _                 _                 _                      
 | __ )  __ _ ___| |__  _   _ _ __ | | ___   __ _  __| |  ___ ___  _ __ ___  
 |  _ \ / _` / __| '_ \| | | | '_ \| |/ _ \ / _` |/ _` | / __/ _ \| '_ ` _ \ 
@@ -189,7 +189,7 @@ bashupload_art = """
                             |_|                                              
 """
 
-devuploads_art = """
+devuploads_art = r"""
  ____                         _                 _                          
 |  _ \  _____   ___   _ _ __ | | ___   __ _  __| |___   ___ ___  _ __ ___  
 | | | |/ _ \ \ / / | | | '_ \| |/ _ \ / _` |/ _` / __| / __/ _ \| '_ ` _ \ 
@@ -209,7 +209,7 @@ def print_ascii_art(service):
         print(devuploads_art)
 
 def interactive_mode():
-    print("\033[92m" + """
+    print("\033[92m" + r"""
  _   _       _                 _  ____            
 | | | |_ __ | | ___   __ _  __| |/ ___| ___ _ __  
 | | | | '_ \| |/ _ \ / _` |/ _` | |  _ / _ \ '_ \ 
@@ -232,7 +232,7 @@ oleh officialputuid
             choice = input("\n[❓] Masukkan nomor pilihan Anda: ")
 
             # ASCII
-            print_ascii_art(int(choice)) 
+            print_ascii_art(int(choice))
 
             if choice == '1':
                 while True:
