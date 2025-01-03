@@ -32,6 +32,11 @@ Atau, Anda dapat mengunduh skrip secara langsung:
    wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py
    ```
 
+Atau Set ENV:
+   ```bash
+   sudo wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py -O /usr/local/bin/SAS && sudo chmod +x /usr/local/bin/upg
+   ```
+
 ## Penggunaan
 
 1. **Interactive Mode**
@@ -61,6 +66,16 @@ Untuk mengunggah file langsung menggunakan argumen baris perintah:
   - `6` untuk Uguu.se
   - `7` untuk 0x0.st
 - `-f [file]`: Menentukan jalur ke file yang ingin Anda unggah.
+
+## ENV
+Untuk menjalankan skrip:
+   ```bash
+   upg
+   ```
+atau langsung:
+   ```bash
+   upg -s [1/2/3/4/5/6/7] -f [file]
+   ```
 
 ## Lisensi
 

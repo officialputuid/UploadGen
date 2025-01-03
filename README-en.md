@@ -32,6 +32,11 @@ Alternatively, you can download the script directly:
    wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py
    ```
 
+Or Set ENV:
+   ```bash
+   sudo wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py -O /usr/local/bin/SAS && sudo chmod +x /usr/local/bin/upg
+   ```
+
 ## Usage
 
 1. **Interactive Mode**
@@ -60,6 +65,16 @@ Alternatively, you can download the script directly:
   - `5` for File.io
   - `7` for 0x0.st
 - `-f [file]`: Specifies the path to the file you want to upload.
+
+## ENV
+To start the script:
+   ```bash
+   upg
+   ```
+Or directly:
+   ```bash
+   upg -s [1/2/3/4/5/6/7] -f [file]
+   ```
 
 ## License
 

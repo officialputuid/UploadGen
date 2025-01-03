@@ -1,4 +1,6 @@
-# Copyright (C) 2024 officialputuid
+#!/usr/bin/env python3
+
+# Copyright (C) 2025 officialputuid
 
 import os
 import sys
