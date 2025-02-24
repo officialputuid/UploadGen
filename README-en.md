@@ -34,7 +34,7 @@ Alternatively, you can download the script directly:
 
 Or Set ENV:
    ```bash
-   sudo wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py -O /usr/local/bin/SAS && sudo chmod +x /usr/local/bin/upg
+   sudo wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py -O /usr/local/bin/upg && sudo chmod +x /usr/local/bin/upg
    ```
 
 ## Usage
