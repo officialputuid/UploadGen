@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UploadGen WebUI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<style>
+:root {
+  --bg: #ffffff;
+  --sidebar: #ffffff;
+  --border: #e8eaed;
+  --text: #202124;
+  --text2: #5f6368;
+  --accent: #1a73e8;
+  --accent-dark: #1765cc;
+  --accent-bg: #e8f0fe;
+  --green: #188038;
+  --green-bg: #e6f4ea;
+  --red: #d93025;
+  --red-bg: #fce8e6;
+  --amber: #b06000;
+  --amber-bg: #fef7e0;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(60,64,67,.12), 0 1px 2px rgba(60,64,67,.08);
+  --shadow-lg: 0 4px 12px rgba(60,64,67,.18);
+  --sidebar-w: 240px;
+  --header-h: 60px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  font-family: 'Google Sans', 'Product Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  z-index: 20;
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.logo-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; flex-shrink: 0;
+}
+.logo-text { font-size: 17px; font-weight: 700; letter-spacing: .2px; }
+.logo-sub { font-size: 11px; color: var(--text2); font-weight: 400; }
+.nav { padding: 14px 12px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px;
+  border: none; background: none; cursor: pointer;
+  border-radius: 10px;
+  color: var(--text2); font-family: inherit; font-size: 14px; font-weight: 500;
+  transition: background .15s, color .15s;
+  text-align: left; width: 100%;
+}
+.nav-item:hover { background: #f1f3f4; color: var(--text); }
+.nav-item.active { background: var(--accent-bg); color: var(--accent); }
+.nav-item svg { flex-shrink: 0; }
+.sidebar-foot {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 11.5px; color: var(--text2);
+  line-height: 1.6;
+}
+.sidebar-foot b { color: var(--text); }
+
+/* ── Main ── */
+.main { margin-left: var(--sidebar-w); min-height: 100%; display: flex; flex-direction: column; }
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  height: var(--header-h);
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 28px;
+  background: rgba(255,255,255,.75);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+}
+.topbar h1 { font-size: 19px; font-weight: 500; }
+.topbar .pill {
+  margin-left: auto;
+  font-size: 12px; font-weight: 500;
+  color: var(--text2);
+  background: #f1f3f4;
+  padding: 5px 12px; border-radius: 999px;
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+}
+.content { padding: 26px 28px 60px; max-width: 920px; width: 100%; }
+.view { display: none; animation: fade .18s ease; }
+.view.active { display: block; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* ── Cards ── */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 18px;
+}
+.card h2 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.card .hint { font-size: 12.5px; color: var(--text2); margin-bottom: 14px; }
+
+/* ── Dropzone ── */
+.dropzone {
+  border: 2px dashed #dadce0;
+  border-radius: var(--radius);
+  padding: 34px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.dropzone:hover, .dropzone.drag { border-color: var(--accent); background: var(--accent-bg); }
+.dropzone .dz-icon { margin-bottom: 8px; color: var(--text2); }
+.dropzone p { color: var(--text2); font-size: 13.5px; }
+.dropzone b { color: var(--accent); font-weight: 600; }
+.file-chip {
+  display: none; align-items: center; gap: 10px;
+  margin-top: 12px;
+  background: #f8f9fa;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.file-chip.show { display: flex; }
+.file-chip .fname { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.file-chip .fsize { color: var(--text2); font-size: 12.5px; flex-shrink: 0; }
+.file-chip .frm {
+  border: none; background: none; cursor: pointer; color: var(--text2);
+  font-size: 16px; line-height: 1; padding: 2px 6px; border-radius: 6px;
+}
+.file-chip .frm:hover { background: #f1f3f4; color: var(--red); }
+
+/* ── Service grid ── */
+.svc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.svc-btn {
+  border: 1.5px solid var(--border);
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+  text-align: center;
+}
+.svc-btn:hover { border-color: #c6c9cf; background: #fafbfc; }
+.svc-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.svc-btn .s-name { font-size: 13.5px; font-weight: 600; color: var(--text); }
+.svc-btn .s-badge {
+  display: inline-block; margin-top: 5px;
+  font-size: 10px; font-weight: 600;
+  color: var(--amber); background: var(--amber-bg);
+  padding: 2px 7px; border-radius: 999px;
+}
+
+/* ── Inputs ── */
+label.field { display: block; font-size: 13px; font-weight: 600; margin: 14px 0 6px; }
+input[type=text], input[type=url], input[type=password] {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #dadce0;
+  border-radius: 10px;
+  font-family: inherit; font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(26,115,232,.15); }
+input::placeholder { color: #9aa0a6; }
+.api-wrap { display: none; }
+.api-wrap.show { display: block; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: none; cursor: pointer;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  padding: 11px 22px;
+  border-radius: 999px;
+  transition: background .15s, box-shadow .15s, opacity .15s;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--accent-dark); box-shadow: var(--shadow); }
+.btn-primary:disabled { opacity: .55; cursor: not-allowed; }
+.btn-ghost { background: #f1f3f4; color: var(--text); }
+.btn-ghost:hover { background: #e6e8ea; }
+.btn-row { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.btn-block { width: 100%; }
+
+/* ── Progress ── */
+.progress-card { display: none; }
+.progress-card.show { display: block; }
+.progress-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.progress-head .plabel { font-size: 13px; font-weight: 600; }
+.progress-head .ppct { font-size: 14px; font-weight: 700; color: var(--accent); font-family: ui-monospace, Consolas, monospace; }
+.bar { height: 8px; background: #e8eaed; border-radius: 999px; overflow: hidden; }
+.bar > div {
+  height: 100%; width: 0%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width .25s ease;
+}
+.log-box {
+  margin-top: 12px;
+  background: #f8f9fa;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  height: 170px; overflow-y: auto;
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 12px; line-height: 1.55;
+  color: var(--text2);
+  white-space: pre-wrap; word-break: break-all;
+}
+.log-box .ok { color: var(--green); font-weight: 600; }
+.log-box .err { color: var(--red); font-weight: 600; }
+
+/* ── Result ── */
+.result-card { display: none; }
+.result-card.show { display: block; }
+.result-card.ok { border-color: #b7e0c2; background: var(--green-bg); }
+.result-card.err { border-color: #f2b8b5; background: var(--red-bg); }
+.result-card .r-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.result-card.ok .r-title { color: var(--green); }
+.result-card.err .r-title { color: var(--red); }
+.result-link {
+  display: flex; align-items: center; gap: 8px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+}
+.result-link a {
+  color: var(--accent); text-decoration: none;
+  font-size: 13.5px; font-weight: 500;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;
+}
+.result-link a:hover { text-decoration: underline; }
+.result-link .copy {
+  border: none; background: #f1f3f4; cursor: pointer;
+  border-radius: 8px; padding: 6px 12px;
+  font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--text);
+  flex-shrink: 0;
+}
+.result-link .copy:hover { background: #e0e3e6; }
+.result-link .copy.copied { background: var(--green-bg); color: var(--green); }
+.result-meta { font-size: 12.5px; color: var(--text2); }
+.result-err { font-size: 13px; color: var(--red); }
+
+/* ── Status view ── */
+.status-summary {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.sum-chip {
+  font-size: 13px; font-weight: 600;
+  padding: 7px 14px; border-radius: 999px;
+}
+.sum-chip.all { background: var(--green-bg); color: var(--green); }
+.sum-chip.some { background: var(--amber-bg); color: var(--amber); }
+.svc-list { display: flex; flex-direction: column; gap: 8px; }
+.svc-row {
+  display: flex; align-items: center; gap: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: #fff;
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.dot.on { background: var(--green); box-shadow: 0 0 0 3px var(--green-bg); }
+.dot.off { background: var(--red); box-shadow: 0 0 0 3px var(--red-bg); }
+.svc-row .s-name { font-weight: 600; flex: 1; }
+.svc-row .s-url { font-size: 11.5px; color: var(--text2); font-family: ui-monospace, Consolas, monospace; }
+.svc-row .s-tag {
+  font-size: 10.5px; font-weight: 600; color: var(--amber);
+  background: var(--amber-bg); padding: 2px 8px; border-radius: 999px;
+}
+
+/* ── History ── */
+.hist-list { display: flex; flex-direction: column; gap: 8px; }
+.hist-row {
+  display: flex; align-items: center; gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+}
+.hist-row .h-ico { flex-shrink: 0; }
+.hist-row .h-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hist-row .h-link { color: var(--accent); text-decoration: none; font-size: 12.5px; }
+.hist-row .h-time { color: var(--text2); font-size: 12px; flex-shrink: 0; }
+.hist-row .h-ok { color: var(--green); font-weight: 700; flex-shrink: 0; }
+.hist-row .h-err { color: var(--red); font-weight: 700; flex-shrink: 0; }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: #323232; color: #fff;
+  padding: 12px 20px; border-radius: 10px;
+  font-size: 13.5px; font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  z-index: 100; max-width: 90vw;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 720px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+  .content { padding: 18px 16px 50px; }
+  .topbar { padding: 0 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </div>
+    <div>
+      <div class="logo-text">UploadGen</div>
+      <div class="logo-sub">WebUI v2.2</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <button class="nav-item active" data-view="upload">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+      Upload
+    </button>
+    <button class="nav-item" data-view="download">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0l5-5m-5 5l-5-5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+      Download
+    </button>
+    <button class="nav-item" data-view="status">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      Status Server
+    </button>
+    <button class="nav-item" data-view="history">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      Riwayat
+    </button>
+  </nav>
+  <div class="sidebar-foot">
+    <b>by officialputuid</b><br>
+    Layanan: 7 host upload<br>
+    Upload · Download · Cek status
+  </div>
+</aside>
+
+<!-- Main -->
+<div class="main">
+  <header class="topbar">
+    <h1 id="pageTitle">Upload File</h1>
+    <span class="pill" id="netPill">● offline</span>
+  </header>
+
+  <div class="content">
+
+    <!-- ── UPLOAD ── -->
+    <section class="view active" id="view-upload">
+      <div class="card">
+        <h2>Pilih File</h2>
+        <div class="hint">Tarik file ke sini, atau klik untuk memilih dari komputer.</div>
+        <div class="dropzone" id="dropzone">
+          <div class="dz-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+          </div>
+          <p><b>Klik untuk pilih file</b> atau tarik &amp; lepas di sini</p>
+        </div>
+        <div class="file-chip" id="fileChip">
+          <span class="fname" id="fileName">—</span>
+          <span class="fsize" id="fileSize">—</span>
+          <button class="frm" id="fileRemove" title="Hapus file">✕</button>
+        </div>
+        <input type="file" id="fileInput" hidden>
+      </div>
+
+      <div class="card">
+        <h2>Pilih Layanan</h2>
+        <div class="hint">Layanan bertanda <b style="color:var(--amber)">API</b> membutuhkan API key.</div>
+        <div class="svc-grid" id="svcGrid">
+          {% for sid, info in services.items() %}
+          <button class="svc-btn" data-sid="{{ sid }}" data-api="{{ '1' if info.needs_api else '0' }}">
+            <div class="s-name">{{ info.name }}</div>
+            {% if info.needs_api %}<span class="s-badge">API</span>{% endif %}
+          </button>
+          {% endfor %}
+        </div>
+        <div class="api-wrap" id="apiWrap">
+          <label class="field" for="apiKey">API Key</label>
+          <input type="password" id="apiKey" placeholder="Masukkan API key layanan" autocomplete="off">
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary btn-block" id="btnUpload" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5l5 5"/></svg>
+            Upload Sekarang
+          </button>
+        </div>
+      </div>
+
+      <div class="card progress-card" id="upProgress">
+        <div class="progress-head">
+          <span class="plabel" id="upLabel">Uploading . . .</span>
+          <span class="ppct" id="upPct">0%</span>
+        </div>
+        <div class="bar"><div id="upBar"></div></div>
+        <div class="log-box" id="upLog"></div>
+      </div>
+
+      <div class="card result-card" id="upResult">
+        <div class="r-title" id="upResultTitle">✔️ Berhasil</div>
+        <div class="result-link">
+          <a id="upLink" href="#" target="_blank" rel="noopener">—</a>
+          <button class="copy" id="upCopy">Salin</button>
+        </div>
+        <div class="result-meta" id="upMeta"></div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="upAgain">Upload Lagi</button>
+          <button class="btn btn-ghost" id="upOpen">Buka Link</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DOWNLOAD ── -->
+    <section class="view" id="view-download">
+      <div class="card">
+        <h2>Download File</h2>
+        <div class="hint">Tempel URL file — support Pixeldrain /u/, TmpFiles, dan URL langsung.</div>
+        <label class="field" for="dlUrl">URL File</label>
+        <input type="url" id="dlUrl" placeholder="https://example.com/file.zip">
+        <label class="field" for="dlOut">Nama Output <span style="font-weight:400;color:var(--text2)">(opsional — kosong = auto)</span></label>
+        <input type="text" id="dlOut" placeholder="myfile.zip">
+        <div class="btn-row">
+          <button class="btn btn-primary btn-block" id="btnDownload" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0l5-5m-5 5l-5-5"/></svg>
+            Download
+          </button>
+        </div>
+      </div>
+
+      <div class="card progress-card" id="dlProgress">
+        <div class="progress-head">
+          <span class="plabel" id="dlLabel">Downloading . . .</span>
+          <span class="ppct" id="dlPct">0%</span>
+        </div>
+        <div class="bar"><div id="dlBar"></div></div>
+        <div class="log-box" id="dlLog"></div>
+      </div>
+
+      <div class="card result-card" id="dlResult">
+        <div class="r-title" id="dlResultTitle">✔️ Berhasil</div>
+        <div class="result-link">
+          <span style="flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="dlPath">—</span>
+        </div>
+        <div class="result-meta" id="dlMeta"></div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="dlAgain">Download Lagi</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STATUS ── -->
+    <section class="view" id="view-status">
+      <div class="card">
+        <h2>Status Server</h2>
+        <div class="hint">Cek ketersediaan semua layanan upload secara langsung.</div>
+        <div class="status-summary">
+          <span class="sum-chip" id="sumChip">⏳ Mengecek . . .</span>
+          <button class="btn btn-ghost" id="btnRefresh">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-2.6-6.3M21 3v6h-6"/></svg>
+            Refresh
+          </button>
+        </div>
+        <div class="svc-list" id="svcList"></div>
+      </div>
+    </section>
+
+    <!-- ── HISTORY ── -->
+    <section class="view" id="view-history">
+      <div class="card">
+        <h2>Riwayat Job</h2>
+        <div class="hint">Job terakhir yang dijalankan sesi ini.</div>
+        <div class="hist-list" id="histList"></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── State ── */
+const SERVICES = {
+  {% for sid, info in services.items() %}{{ sid }}: { name: {{ info.name|tojson }}, needs_api: {{ 'true' if info.needs_api else 'false' }} },
+  {% endfor %}
+};
+const TOKEN = new URLSearchParams(location.search).get('token') || '';
+function withToken(url) {
+  return TOKEN ? url + (url.includes('?') ? '&' : '?') + 'token=' + encodeURIComponent(TOKEN) : url;
+}
+let selectedFile = null;
+let selectedSvc = null;
+let activeSSE = null;
+
+/* ── Helpers ── */
+const $ = id => document.getElementById(id);
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove('show'), 2600);
+}
+function fmtSize(n) {
+  if (!n) return '0 B';
+  const u = ['B','KB','MB','GB','TB']; let i = 0;
+  while (n >= 1024 && i < u.length - 1) { n /= 1024; i++; }
+  return n.toFixed(n >= 10 || i === 0 ? 0 : 1) + ' ' + u[i];
+}
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function appendLog(box, line, cls) {
+  const d = document.createElement('div');
+  d.className = cls || '';
+  d.textContent = line;
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+}
+
+/* ── Nav ── */
+const TITLES = { upload: 'Upload File', download: 'Download File', status: 'Status Server', history: 'Riwayat Job' };
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    btn.classList.add('active');
+    $('view-' + btn.dataset.view).classList.add('active');
+    $('pageTitle').textContent = TITLES[btn.dataset.view];
+    if (btn.dataset.view === 'status') refreshStatus();
+    if (btn.dataset.view === 'history') loadHistory();
+  });
+});
+
+/* ── Dropzone ── */
+const dz = $('dropzone'), fi = $('fileInput');
+dz.addEventListener('click', () => fi.click());
+['dragover','dragenter'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('drag'); }));
+['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('drag'); }));
+dz.addEventListener('drop', e => {
+  const f = e.dataTransfer.files[0];
+  if (f) setFile(f);
+});
+fi.addEventListener('change', () => { if (fi.files[0]) setFile(fi.files[0]); });
+function setFile(f) {
+  selectedFile = f;
+  $('fileName').textContent = f.name;
+  $('fileSize').textContent = fmtSize(f.size);
+  $('fileChip').classList.add('show');
+  updateUploadBtn();
+}
+$('fileRemove').addEventListener('click', () => {
+  selectedFile = null;
+  fi.value = '';
+  $('fileChip').classList.remove('show');
+  updateUploadBtn();
+});
+
+/* ── Service grid ── */
+$('svcGrid').querySelectorAll('.svc-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    $('svcGrid').querySelectorAll('.svc-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    selectedSvc = parseInt(b.dataset.sid);
+    $('apiWrap').classList.toggle('show', b.dataset.api === '1');
+    updateUploadBtn();
+  });
+});
+
+function updateUploadBtn() {
+  $('btnUpload').disabled = !(selectedFile && selectedSvc);
+}
+
+/* ── Upload flow ── */
+$('btnUpload').addEventListener('click', async () => {
+  if (!selectedFile || !selectedSvc) return;
+  const svc = SERVICES[selectedSvc];
+  if (svc.needs_api && !$('apiKey').value.trim()) { toast('Isi API key dulu'); return; }
+
+  const fd = new FormData();
+  fd.append('file', selectedFile);
+  fd.append('service', selectedSvc);
+  fd.append('api_key', $('apiKey').value.trim());
+
+  resetResult('up');
+  $('upProgress').classList.add('show');
+  $('upLog').innerHTML = '';
+  setBar('up', 0);
+  $('upLabel').textContent = `Upload ke ${svc.name} . . .`;
+  $('btnUpload').disabled = true;
+
+  try {
+    const resp = await fetch(withToken('/api/upload'), { method: 'POST', body: fd });
+    const data = await resp.json();
+    if (data.error) { failJob('up', data.error); return; }
+    appendLog($('upLog'), `Job ${data.job_id.slice(0,8)} · ${data.file} → ${data.service}`);
+    watchJob('up', data.job_id, 'upload');
+  } catch (e) {
+    failJob('up', 'Gagal menghubungi server: ' + e.message);
+  }
+});
+
+/* ── Download flow ── */
+$('dlUrl').addEventListener('input', () => $('btnDownload').disabled = !$('dlUrl').value.trim());
+$('btnDownload').addEventListener('click', async () => {
+  const url = $('dlUrl').value.trim();
+  if (!url) return;
+
+  resetResult('dl');
+  $('dlProgress').classList.add('show');
+  $('dlLog').innerHTML = '';
+  setBar('dl', 0);
+  $('dlLabel').textContent = 'Downloading . . .';
+  $('btnDownload').disabled = true;
+
+  try {
+    const resp = await fetch(withToken('/api/download'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, output: $('dlOut').value.trim() })
+    });
+    const data = await resp.json();
+    if (data.error) { failJob('dl', data.error); return; }
+    appendLog($('dlLog'), `Job ${data.job_id.slice(0,8)} · ${data.url}`);
+    watchJob('dl', data.job_id, 'download');
+  } catch (e) {
+    failJob('dl', 'Gagal menghubungi server: ' + e.message);
+  }
+});
+
+/* ── SSE watcher ── */
+function watchJob(prefix, jobId, type) {
+  if (activeSSE) activeSSE.close();
+  const es = new EventSource(withToken('/api/job/' + jobId));
+  activeSSE = es;
+  es.addEventListener('log', e => {
+    const d = JSON.parse(e.data);
+    appendLog($(prefix + 'Log'), d.line);
+    if (d.percent) setBar(prefix, d.percent);
+  });
+  es.addEventListener('progress', e => {
+    const d = JSON.parse(e.data);
+    setBar(prefix, d.percent);
+  });
+  es.addEventListener('done', e => {
+    const d = JSON.parse(e.data);
+    es.close();
+    activeSSE = null;
+    if (type === 'upload') finishUpload(d); else finishDownload(d);
+  });
+  es.onerror = () => {
+    // keepalive / disconnect — biarkan, done event yang menutup
+  };
+}
+function setBar(prefix, pct) {
+  pct = Math.max(0, Math.min(100, pct));
+  $(prefix + 'Bar').style.width = pct + '%';
+  $(prefix + 'Pct').textContent = pct + '%';
+}
+function resetResult(prefix) {
+  $(prefix + 'Result').classList.remove('show', 'ok', 'err');
+}
+function failJob(prefix, msg) {
+  $(prefix + 'Progress').classList.remove('show');
+  const r = $(prefix + 'Result');
+  r.classList.add('show', 'err');
+  $(prefix + 'ResultTitle').textContent = '✖️ Gagal';
+  r.querySelector('.result-err')?.remove();
+  const d = document.createElement('div');
+  d.className = 'result-err';
+  d.textContent = msg;
+  r.appendChild(d);
+  $(prefix === 'up' ? 'btnUpload' : 'btnDownload').disabled = false;
+  toast(msg);
+}
+
+function finishUpload(d) {
+  $('upProgress').classList.remove('show');
+  $('btnUpload').disabled = false;
+  const r = $('upResult');
+  r.classList.add('show');
+  if (d.ok) {
+    r.classList.add('ok');
+    $('upResultTitle').textContent = '✔️ Berhasil Diunggah';
+    $('upLink').href = d.link;
+    $('upLink').textContent = d.link;
+    $('upMeta').textContent = `Layanan: ${d.service || '—'} · File: ${selectedFile ? selectedFile.name : '—'}`;
+    r.querySelector('.result-err')?.remove();
+  } else {
+    r.classList.add('err');
+    $('upResultTitle').textContent = '✖️ Gagal';
+    $('upLink').href = '#';
+    $('upLink').textContent = '—';
+    r.querySelector('.result-err')?.remove();
+    const de = document.createElement('div');
+    de.className = 'result-err';
+    de.textContent = d.error || 'Terjadi kesalahan';
+    r.appendChild(de);
+  }
+}
+$('upCopy').addEventListener('click', () => {
+  const link = $('upLink').textContent;
+  if (!link || link === '—') return;
+  const done = () => {
+    $('upCopy').textContent = '✓ Tersalin';
+    $('upCopy').classList.add('copied');
+    setTimeout(() => { $('upCopy').textContent = 'Salin'; $('upCopy').classList.remove('copied'); }, 1600);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(link).then(done).catch(() => fallbackCopy(link, done));
+  } else fallbackCopy(link, done);
+});
+function fallbackCopy(text, done) {
+  const ta = document.createElement('textarea');
+  ta.value = text; document.body.appendChild(ta);
+  ta.select(); document.execCommand('copy'); ta.remove(); done();
+}
+$('upOpen').addEventListener('click', () => window.open($('upLink').href, '_blank'));
+$('upAgain').addEventListener('click', () => {
+  $('upResult').classList.remove('show', 'ok', 'err');
+  selectedFile = null; fi.value = '';
+  $('fileChip').classList.remove('show');
+  $('apiKey').value = '';
+  $('apiWrap').classList.remove('show');
+  $('svcGrid').querySelectorAll('.svc-btn').forEach(x => x.classList.remove('active'));
+  selectedSvc = null;
+  updateUploadBtn();
+});
+
+function finishDownload(d) {
+  $('dlProgress').classList.remove('show');
+  $('btnDownload').disabled = false;
+  const r = $('dlResult');
+  r.classList.add('show');
+  if (d.ok) {
+    r.classList.add('ok');
+    $('dlResultTitle').textContent = '✔️ Berhasil Diunduh';
+    $('dlPath').textContent = d.path;
+    $('dlMeta').textContent = `${d.name} · ${d.size}`;
+    r.querySelector('.result-err')?.remove();
+  } else {
+    r.classList.add('err');
+    $('dlResultTitle').textContent = '✖️ Gagal';
+    $('dlPath').textContent = '—';
+    r.querySelector('.result-err')?.remove();
+    const de = document.createElement('div');
+    de.className = 'result-err';
+    de.textContent = d.error || 'Terjadi kesalahan';
+    r.appendChild(de);
+  }
+}
+$('dlAgain').addEventListener('click', () => {
+  $('dlResult').classList.remove('show', 'ok', 'err');
+  $('dlUrl').value = ''; $('dlOut').value = '';
+  $('btnDownload').disabled = true;
+});
+
+/* ── Status ── */
+async function refreshStatus() {
+  $('svcList').innerHTML = '<div class="hint">⏳ Mengecek ketersediaan server . . .</div>';
+  $('sumChip').className = 'sum-chip';
+  $('sumChip').textContent = '⏳ Mengecek . . .';
+  try {
+    const resp = await fetch(withToken('/api/status'));
+    const d = await resp.json();
+    $('svcList').innerHTML = '';
+    d.services.forEach(s => {
+      const row = document.createElement('div');
+      row.className = 'svc-row';
+      row.innerHTML = `
+        <span class="dot ${s.online ? 'on' : 'off'}"></span>
+        <span class="s-name">${s.id}. ${esc(s.name)}</span>
+        ${s.needs_api ? '<span class="s-tag">API</span>' : ''}
+        <span class="s-url">${esc(s.url.replace(/^https?:\/\//, ''))}</span>
+        <span style="font-size:12px;font-weight:600;color:${s.online ? 'var(--green)' : 'var(--red)'}">${s.online ? 'ONLINE' : 'OFFLINE'}</span>`;
+      $('svcList').appendChild(row);
+    });
+    const chip = $('sumChip');
+    chip.className = 'sum-chip ' + (d.online === d.total ? 'all' : 'some');
+    chip.textContent = d.online === d.total
+      ? `✓ ${d.online}/${d.total} server online`
+      : `⚠ ${d.online}/${d.total} online · ${d.total - d.online} offline`;
+  } catch (e) {
+    $('svcList').innerHTML = '<div class="hint">Gagal menghubungi server.</div>';
+    $('sumChip').textContent = '✖️ Gagal cek';
+  }
+}
+$('btnRefresh').addEventListener('click', refreshStatus);
+
+/* ── History ── */
+async function loadHistory() {
+  try {
+    const resp = await fetch(withToken('/api/history'));
+    const d = await resp.json();
+    const box = $('histList');
+    box.innerHTML = '';
+    if (!d.jobs.length) {
+      box.innerHTML = '<div class="hint">Belum ada job di sesi ini.</div>';
+      return;
+    }
+    d.jobs.forEach(j => {
+      const row = document.createElement('div');
+      row.className = 'hist-row';
+      const ico = j.type === 'upload' ? '⬆️' : '⬇️';
+      const res = j.ok
+        ? `<span class="h-ok">OK</span>`
+        : `<span class="h-err">GAGAL</span>`;
+      const target = j.link ? `<a class="h-link" href="${esc(j.link)}" target="_blank">${esc(j.link)}</a>` : `<span class="h-link" style="color:var(--text2)">${esc(j.path || j.error || '')}</span>`;
+      row.innerHTML = `
+        <span class="h-ico">${ico}</span>
+        <span class="h-label">${esc(j.label)}</span>
+        ${target}
+        <span class="h-time">${j.ts}</span>
+        ${res}`;
+      box.appendChild(row);
+    });
+  } catch (e) {
+    $('histList').innerHTML = '<div class="hint">Gagal memuat riwayat.</div>';
+  }
+}
+
+/* ── Boot: ping server ── */
+(async function boot() {
+  try {
+    const resp = await fetch(withToken('/api/status'));
+    if (resp.ok) {
+      const d = await resp.json();
+      $('netPill').textContent = `● ${d.online}/${d.total} online`;
+      $('netPill').style.color = d.online === d.total ? 'var(--green)' : 'var(--amber)';
+    }
+  } catch (e) { /* offline */ }
+})();
+</script>
+</body>
+</html>

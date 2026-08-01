@@ -1,81 +1,95 @@
 # UploadGen
 
-**UploadGen** adalah skrip Python yang serbaguna dirancang untuk menyederhanakan proses unggah file ke platform berbagi file populer melalui antarmuka baris perintah yang intuitif. [EN](README-en.md)
+**UploadGen** adalah skrip Python yang serbaguna dirancang untuk menyederhanakan proses unggah dan unduh file ke platform berbagi file populer melalui antarmuka baris perintah yang intuitif.
 
 ## Fitur
 
-- **Unggah ke Pixeldrain.com**
-- **Unggah ke GoFile.io**
-- **Unggah ke Bashupload.com**
-- **Unggah ke Devuploads.com**
-- **Unggah ke File.io**
-- **Unggah ke Uguu.se**
-- **Unggah ke 0x0.st**
+- **Unggah ke 7 layanan**: Pixeldrain, Gofile, Bashupload, Devuploads, TmpFiles.org, Uguu, 0x0.st
+- **Unduh file** dari URL dengan progress bar
+- **Progress bar** real-time saat upload & download (`tqdm`)
+- **Spinner animasi** saat proses jaringan (cek server, validasi API, cari link)
+- **Tab completion** saat input path file
+- **CLI & Interactive mode**
 
 ## Persyaratan
 
 - Python 3.x
-- Library `requests` (dapat diinstal melalui `pip`)
+- Library: `requests`, `tqdm` (dapat diinstal melalui `pip`)
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Instalasi
 
-Untuk memulai dengan UploadGen, ikuti langkah-langkah berikut:
+```bash
+git clone https://github.com/officialputuid/UploadGen.git
+cd UploadGen
+```
 
-   ```bash
-   git clone https://github.com/officialputuid/UploadGen.git
-   cd UploadGen
-   ```
+Atau unduh langsung:
 
-Atau, Anda dapat mengunduh skrip secara langsung:
+```bash
+wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py
+```
 
-   ```bash
-   wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py
-   ```
+Atau set sebagai ENV command:
 
-Atau Set ENV:
-   ```bash
-   sudo wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py -O /usr/local/bin/upg && sudo chmod +x /usr/local/bin/upg
-   ```
+```bash
+sudo wget https://raw.githubusercontent.com/officialputuid/UploadGen/main/uploadgen.py -O /usr/local/bin/upg && sudo chmod +x /usr/local/bin/upg
+```
 
 ## Penggunaan
 
-1. **Interactive Mode**
+### Interactive Mode
 
-Untuk menjalankan skrip dan menggunakan menu interaktif:
+```bash
+python3 uploadgen.py
+```
 
-   ```bash
-   python3 uploadgen.py
-   ```
+### Upload via CLI
 
-2. **Command-Line Arguments**
+```bash
+python3 uploadgen.py -s [1-7] -f [file]
+```
 
-Untuk mengunggah file langsung menggunakan argumen baris perintah:
+| Flag | Layanan |
+|------|---------|
+| `-s 1` | Pixeldrain.com (API) |
+| `-s 2` | Gofile.io |
+| `-s 3` | Bashupload.app |
+| `-s 4` | Devuploads.com (API) |
+| `-s 5` | TmpFiles.org |
+| `-s 6` | Uguu.se |
+| `-s 7` | 0x0.st |
 
-   ```bash
-   python3 uploadgen.py -s [1/2/3/4/5/6/7] -f [file]
-   ```
-   contoh: `python uploadgen.py -s 2 -f /path/file.txt`
+### Download via CLI
 
-- `-h`: Panduan UploadGen
-- `-s [1/2/3/4/5/6/7]`: Memilih layanan:
-  - `1` untuk Pixeldrain.com
-  - `2` untuk GoFile.io
-  - `3` untuk Bashupload.com
-  - `4` untuk Devuploads.com
-  - `5` untuk File.io
-  - `6` untuk Uguu.se
-  - `7` untuk 0x0.st
-- `-f [file]`: Menentukan jalur ke file yang ingin Anda unggah.
+```bash
+python3 uploadgen.py -d [URL] -o [output]
+```
 
-## ENV
-Untuk menjalankan skrip:
-   ```bash
-   upg
-   ```
-atau langsung:
-   ```bash
-   upg -s [1/2/3/4/5/6/7] -f [file]
-   ```
+Contoh: `python3 uploadgen.py -d https://example.com/file.zip -o myfile.zip`
+
+### ENV Command
+
+```bash
+upg                              # Interactive mode
+upg -s 2 -f /path/file.txt       # Upload via CLI
+upg -d https://url/file.zip      # Download via CLI
+```
+
+## 🌐 WebUI
+
+Upload/download dari browser tanpa terminal — drag & drop file, pilih layanan, status server, riwayat job.
+
+```bash
+cd UploadGen
+python3 -m venv venv && venv/bin/pip install flask -r requirements.txt  # sekali
+./start-webui.sh                    # → http://127.0.0.1:5101
+```
+
+Akses dari jaringan lain: set `UPGEN_HOST=0.0.0.0` + `UPGEN_TOKEN` (atau file `webui/.token`), lihat `webui/README.md`.
 
 ## Lisensi
 
